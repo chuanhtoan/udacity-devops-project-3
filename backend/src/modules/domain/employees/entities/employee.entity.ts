@@ -22,7 +22,7 @@ export class Employee extends AggregateRoot<number> {
       this.salary = +params.salary;
       this.salaryType = getSalaryTypeFromEnum(params.salaryType);
       this.secondLastName = params.secondLastName;
-      this.startDate = getDateFromString(params.startDate);
+      this.startDate = params.startDate;
       this.tags = params.tags;
       this.city = params.city;
       this.country = params.country;
@@ -65,7 +65,7 @@ export class Employee extends AggregateRoot<number> {
   public birthdate: string;
 
   @Column()
-  public startDate: Date;
+  public startDate: string;
 
   @Column({ length: 200, nullable: true })
   public address: string;
@@ -120,7 +120,7 @@ export enum SalaryType {
   HOURLY = 'hourly',
 }
 
-export function getDateFromString(date: string): Date {
+export function getDateFromString(date: string): string {
   return moment(date).format('M/D/YYYY');
 }
 
