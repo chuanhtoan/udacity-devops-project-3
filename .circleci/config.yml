@@ -229,14 +229,10 @@ jobs:
       # Checkout code from git
       - checkout
       - install_awscli
-      - install_nodejs
       - run:
           name: Run migrations
           command: |
             cd backend
-            npm install
-            npm audit fix --audit-level=critical --force
-            npm audit --audit-level=critical
             npm run migrations > migrations_dump.txt
       - run:
           name: Send migration status to kvdb.io
