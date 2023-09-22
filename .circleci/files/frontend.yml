@@ -10,8 +10,12 @@ Resources:
   WebsiteBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub "UdaPeople-${ID}"
-      AccessControl: PublicRead
+      BucketName: !Sub "udapeople-${ID}"
+      PublicAccessBlockConfiguration: # Since 25.04.2023 Amazon changed default settings for newly created buckets, so that i have to change to this to create bucket
+        BlockPublicAcls: false
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: ObjectWriter
       WebsiteConfiguration:
         IndexDocument: index.html
         ErrorDocument: 404.html
