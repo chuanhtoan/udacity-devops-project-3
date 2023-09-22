@@ -295,7 +295,7 @@ jobs:
           name: Install dependencies
           command: |
             cd backend
-            npm install
+            npm install --legacy-peer-deps
 
       - run:
           name: Package backend
