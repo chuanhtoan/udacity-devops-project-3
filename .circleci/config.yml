@@ -34,9 +34,9 @@ commands:
           when: on_fail
           command: |
             echo << parameters.WorkflowID >>
-            aws cloudformation delete-stack --stack-name udacity-backend-<< parameters.WorkflowID >>
-            aws s3 rm s3://udacity-<< parameters.WorkflowID >> --recursive
-            aws cloudformation delete-stack --stack-name udacity-frontend-<< parameters.WorkflowID >>
+            aws cloudformation delete-stack --stack-name UdaPeople-backend-<< parameters.WorkflowID >>
+            aws s3 rm s3://UdaPeople-<< parameters.WorkflowID >> --recursive
+            aws cloudformation delete-stack --stack-name UdaPeople-frontend-<< parameters.WorkflowID >>
 
 jobs:
   build-frontend:
@@ -144,8 +144,8 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
-              --tags project=udacity \
-              --stack-name "udacity-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --tags project=UdaPeople \
+              --stack-name "UdaPeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
 
       - run:
@@ -153,8 +153,8 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
-              --tags project=udacity \
-              --stack-name "udacity-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --tags project=UdaPeople \
+              --stack-name "UdaPeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
 
       - run:
