@@ -23,12 +23,12 @@ commands:
             sudo apt install ansible -y
 
   install_nodejs:
-    description: Install nodejs 13
+    description: Install nodejs 16
     steps:
       - run:
-          name: Install nodejs 13
+          name: Install nodejs 16
           command: |
-            curl -fsSL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+            curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
             sudo apt-get install -y nodejs
 
   destroy-environment:
@@ -224,7 +224,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/base:stable
     steps:
       # Checkout code from git
       - checkout
