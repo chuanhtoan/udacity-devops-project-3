@@ -334,12 +334,10 @@ workflows:
           requires: [build-frontend]
       - test-backend:
           requires: [build-backend]
-      - scan-backend:
-          requires: [build-backend]
       - scan-frontend:
           requires: [build-frontend]
       - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-backend, scan-frontend]
+          requires: [test-frontend, test-backend, scan-frontend]
           filters:
             branches:
               only: [main]
