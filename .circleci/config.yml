@@ -290,42 +290,33 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: cimg/base:stable
+      - image: python:3.7-alpine3.16
     steps:
       - checkout
-      - install_awscli
-      - install_ansible
-      - install_nodejs
       - add_ssh_keys:
           fingerprints: ["90:ea:d6:de:99:ff:1a:d2:fa:d1:9f:80:c7:fa:55:e8"]
-      - attach_workspace:
-          at: ~/
-      - restore_cache:
-          keys: [backend-build]
       - run:
           name: Install dependencies
           command: |
-            cd backend
-            npm install
-      - run:
-          name: Package backend
-          command: |
-            cd backend
-            npm run build
-            tar -czf artifact.tar.gz dist/* package*
-            cd ..
-            cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
+            apk add --update --no-cache tar gzip nodejs npm aws-cli ansible
+      - restore_cache:
+          keys: [backend-build]
+      - attach_workspace:
+          at: ~/
       - run:
           name: Deploy backend
           command: |
-            export TYPEORM_MIGRATION_DIR=./migrations
-            export TYPEORM_ENTITIES=./modules/domain/**/*.entity{.ts,.js}
-            export TYPEORM_MIGRATIONS=./migrations/*.ts
-            echo TYPEORM_MIGRATION_DIR "${TYPEORM_MIGRATIONS_DIR}"
-            echo TYPEORM_ENTITIES "${TYPEORM_ENTITIES}"
-            echo TYPEORM_MIGRATIONS "${TYPEORM_MIGRATIONS}"
+            ls -la ~
+            pwd; ls -la;
+            cd backend
+            npm install
+            npm run build
+            cd ..
+            pwd; ls -la;
+            tar -C backend -czvf artifact.tar.gz .
             cd .circleci/ansible
-            cat inventory.txt
+            echo "Contents of the inventory.txt file is ------$(cat inventory.txt)"
+            ls -la ~
             ansible-playbook -i inventory.txt deploy-backend.yml
       - destroy-environment
       - revert-migrations
