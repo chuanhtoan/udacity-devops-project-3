@@ -419,13 +419,22 @@ jobs:
 workflows:
   default:
     jobs:
+      - build-frontend
       - build-backend
       - deploy-infrastructure:
-          requires: [build-backend]
+          requires: [build-frontend, build-backend]
           filters:
             branches:
               only: [main]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
+      - deploy-frontend:
+          requires: [configure-infrastructure]
       - deploy-backend:
           requires: [configure-infrastructure]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]
+      - cloudfront-update:
+          requires: [smoke-test]
+      - cleanup:
+          requires: [cloudfront-update]
