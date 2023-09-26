@@ -1,10 +1,10 @@
 ---
-- name: "upgrade packages."
+- name: "upgrade packages"
   become: true
   apt:
     upgrade: "yes"
 
-- name: "install dependencies."
+- name: "install dependencies"
   become: true
   apt:
     name: ["nodejs", "npm"]
@@ -18,20 +18,20 @@
     production: yes
     state: present
 
-- name: create backend directory
+- name: "create backend directory"
   become: yes
   file:
     path: /home/ubuntu/backend
     state: directory
     mode: 0755
 
-- name: copy artifact
+- name: "copy artifact"
   become: true
   copy:
     src: ~/project/artifact.tar.gz
     dest: /home/ubuntu/backend/artifact.tar.gz
 
-- name: unpack backend files
+- name: "unpack backend files"
   become: yes
   shell: |
     cd /home/ubuntu/web/backend
@@ -39,7 +39,7 @@
   args:
     chdir: /home/ubuntu/backend
 
-- name: start app
+- name: "start app"
   become: yes
   shell: |
     cd /home/ubuntu/backend
