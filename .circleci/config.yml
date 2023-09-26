@@ -424,7 +424,7 @@ workflows:
           requires: [build-frontend, build-backend]
           filters:
             branches:
-              only: [main]
+              only: [test-branch]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
       - deploy-frontend:
