@@ -7,71 +7,17 @@
     - ansible_python_interpreter: /usr/bin/python3
     - ansible_host_key_checking: false
     - ansible_stdout_callback: yaml
-
   environment:
-    NODE_ENV: production
-    VERSION: '1'
-    ENVIRONMENT: 'production'
-    TYPEORM_CONNECTION: "{{lookup('env', 'TYPEORM_CONNECTION')}}"
-    TYPEORM_MIGRATIONS_DIR: "{{lookup('env', 'TYPEORM_MIGRATIONS_DIR')}}"
-    TYPEORM_PASSWORD: "{{lookup('env', 'TYPEORM_PASSWORD')}}"
-    TYPEORM_PORT: "{{lookup('env', 'TYPEORM_PORT')}}"
-    TYPEORM_USERNAME: "{{lookup('env', 'TYPEORM_USERNAME')}}"
-    TYPEORM_DATABASE: "{{lookup('env', 'TYPEORM_DATABASE')}}"
-    TYPEORM_ENTITIES: "{{lookup('env', 'TYPEORM_ENTITIES')}}"
-    TYPEORM_HOST: "{{lookup('env', 'TYPEORM_HOST')}}"
-    TYPEORM_MIGRATIONS: "{{lookup('env', 'TYPEORM_MIGRATIONS')}}"
-
-  pre_tasks:
-    - name: 'wait 600 seconds for target connection to become reachable/usable.'
-      wait_for_connection:
-        timeout: 600
-    - name: 'install python for Ansible.'
-      become: true
-      raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3)
-      changed_when: false
-    - name: 'apt package update'
-      become: true
-      apt:
-        update_cache: yes
-    - name: 'apt package upgrade'
-      become: true
-      apt:
-        upgrade: yes
-    - name: 'Remove redundant dependencies'
-      become: true
-      apt:
-        autoremove: yes
-    - name: 'Install server nodejs.'
-      become: true
-      apt:
-        name: ['nodejs']
-        state: latest
-        update_cache: yes
-    - name: 'Install the package pm2.'
-      become: true
-      npm:
-        name: pm2
-        global: yes
-        production: yes
-        state: present
-    - name: 'exporting env variables'
-      become: yes
-      shell: |
-        touch /etc/profile.d/env.sh
-        echo export TYPEORM_HOST=$TYPTYPEORM_HOST >> /etc/profile.d/env.sh
-        echo export TYPEORM_CONNECTION=$TYPEORM_CONNECTION >> /etc/profile.d/env.sh
-        echo export TYPEORM_ENTITIES=$TYPEORM_ENTITIES >> /etc/profile.d/env.sh
-        echo export TYPEORM_HOST=$TYPEORM_HOST >> /etc/profile.d/env.sh
-        echo export TYPEORM_PORT=$TYPEORM_PORT >> /etc/profile.d/env.sh
-        echo export TYPEORM_USERNAME=$TYPEORM_USERNAME >> /etc/profile.d/env.sh
-        echo export TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> /etc/profile.d/env.sh
-        echo export TYPEORM_DATABASE=$TYPEORM_DATABASE >> /etc/profile.d/env.sh
-        echo export TYPEORM_MIGRATIONS=$TYPEORM_MIGRATIONS >> /etc/profile.d/env.sh
-        echo export TYPEORM_MIGRATIONS_DIR=$TYPEORM_MIGRATIONS_DIR >> /etc/profile.d/env.sh
-        . /etc/environment
-        . ~/.bashrc
-    - setup:
-
+    - NODE_ENV: production
+    - ENVIRONMENT: production
+    - TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION')}}"
+    - TYPEORM_ENTITIES: "{{ lookup('env', 'TYPEORM_ENTITIES')}}"
+    - TYPEORM_HOST: "{{ lookup('env', 'TYPEORM_HOST')}}"
+    - TYPEORM_PORT: "{{ lookup('env', 'TYPEORM_PORT')}}"
+    - TYPEORM_USERNAME: "{{ lookup('env', 'TYPEORM_USERNAME')}}"
+    - TYPEORM_PASSWORD: "{{ lookup('env', 'TYPEORM_PASSWORD')}}"
+    - TYPEORM_DATABASE: "{{ lookup('env', 'TYPEORM_DATABASE')}}"
+    - TYPEORM_MIGRATIONS: "{{ lookup('env', 'TYPEORM_MIGRATIONS')}}"
+    - TYPEORM_MIGRATIONS_DIR: "{{ lookup('env', 'TYPEORM_MIGRATIONS_DIR')}}"
   roles:
     - deploy
