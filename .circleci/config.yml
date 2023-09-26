@@ -179,7 +179,6 @@ jobs:
       - checkout
       - install_awscli
       - install_ansible
-
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -188,7 +187,6 @@ jobs:
               --tags project=udapeople \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -197,7 +195,6 @@ jobs:
               --tags project=udapeople \
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -211,7 +208,6 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-
       - destroy-environment
 
   configure-infrastructure:
@@ -246,13 +242,11 @@ jobs:
           paths:
             - project/backend
       - destroy-environment
-      # Here's where you will add some code to rollback on failure
 
   run-migrations:
     docker:
       - image: cimg/base:stable
     steps:
-      # Checkout code from git
       - checkout
       - install_awscli
       - install_nodejs
@@ -439,4 +433,4 @@ workflows:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
           filters:
             branches:
-              only: [test-feature-branch]
+              only: [main]
