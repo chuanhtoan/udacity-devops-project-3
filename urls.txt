@@ -1,2 +1,2 @@
 [URL01]: https://github.com/chuanhtoan/udacity-devops-project-3/tree/main
-[URL02]: http://udapeople-8736e27.s3-website-us-west-2.amazonaws.com
+[URL02]: http://udapeople-555a9b6.s3-website-us-west-2.amazonaws.com
